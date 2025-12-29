@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2025-12-28 수행일지</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="2025-12-28 프로젝트 수행일지 - 모바일 앱 취약점 제보와 쿠버네티스 이관 준비" />
+  <meta name="keywords" content="프로젝트 수행일지, 모바일 앱 보안, DevSecOps, Docker, Kubernetes, 취약점 분석, 부트캠프후기, 멀티캠퍼스IT부트캠퍼스, 토스뱅크 사이버보안 엔지니어 부트캠프" />
+  <meta name="author" content="Team 1" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://M4CnCH2Z.github.io/logs/2025-12-28.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="프로젝트 수행일지 - 모의해킹을 통한 웹사이트 및 모바일 앱(Android) 보안 취약점 분석 및 대응" />
+  <meta property="og:description" content="2025-12-28 수행일지&#10;#부트캠프후기 #멀티캠퍼스IT부트캠퍼스 #[토스뱅크] 사이버보안 엔지니어 부트캠프(공격&방어 기술)" />
+  <meta property="og:url" content="https://M4CnCH2Z.github.io/logs/2025-12-28.html" />
+</head>
+<body>
+
+<header>
+  <h1>2025-12-28 프로젝트 수행일지</h1>
+  <a href="../index.html">← 메인으로</a>
+</header>
+
+<section>
+  <h2>1. 목표</h2>
+  <ul>
+    <li>상용 모바일 앱 정적·동적 분석 및 취약점 제보</li>
+    <li>레거시 웹 서비스를 Docker 환경에서 쿠버네티스 환경으로 이관</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. 수행 내용</h2>
+  <pre>
+    - 모바일 앱 분석 및 취약점 제보:
+        Frida 스크립트로 런타임 검사 우회를 검증하고, MobSF 정적 분석 결과를 기반으로
+        인증/세션 관련 잠재 취약점을 재현하여 제보 초안을 정리하였다.
+    - 웹 서비스 환경 이관 준비:
+        Docker Compose 자원을 Pod/Deployment/Service로 매핑하기 위해 쿠버네티스 핵심 리소스를 스터디하였다.
+        로컬 Kind 클러스터 구성 절차와 Ingress/스토리지 옵션을 비교하며 마이그레이션 전략을 초안으로 정리하였다.
+  </pre>
+</section>
+
+<section>
+  <h2>3. 산출물</h2>
+  <ul>
+    <li>모바일 앱 취약점 제보 메일 초안 및 재현 스크린샷 정리</li>
+    <li>Docker Compose → 쿠버네티스 리소스 매핑 노트 및 마이그레이션 체크리스트</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. 이슈 및 한계</h2>
+  <p>
+    일부 앱에서 런타임 계측 탐지 우회를 위해 추가 후킹 지점이 필요하며,
+    테스트용 클러스터 자원 제약으로 실서비스 트래픽 시뮬레이션은 미완료 상태이다.
+  </p>
+</section>
+
+<section>
+  <h2>5. 다음 작업 계획</h2>
+  <ul>
+    <li>취약점 제보 제출 전 추가 재현 및 로그 보강</li>
+    <li>Kind/Minikube에 샘플 워크로드 배포 후 Ingress 구성 테스트</li>
+    <li>쿠버네티스 마이그레이션 절차에 CI/CD 보안 통제 항목 반영</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Team 1</p>
+</footer>
+
+</body>
+</html>
