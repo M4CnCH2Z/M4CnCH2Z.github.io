@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2026-01-04 수행일지</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="2026-01-04 프로젝트 수행일지 - DevSecOps 파이프라인 설계 및 Pentest 자동화 고도화" />
+  <meta name="keywords" content="프로젝트 수행일지, DevSecOps, Pentest 자동화, Kubernetes, EKS, 보안 파이프라인, 멀티캠퍼스IT부트캠퍼스, 토스뱅크 사이버보안 엔지니어 부트캠프" />
+  <meta name="author" content="Team 1" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://M4CnCH2Z.github.io/logs/2026-01-04.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="프로젝트 수행일지 - DevSecOps 기반 보안 파이프라인 및 Pentest 자동화 설계" />
+  <meta property="og:description" content="2026-01-04 수행일지&#10;#DevSecOps #Pentest자동화 #[토스뱅크] 사이버보안 엔지니어 부트캠프(공격&방어 기술)" />
+  <meta property="og:url" content="https://M4CnCH2Z.github.io/logs/2026-01-04.html" />
+</head>
+<body>
+
+<header>
+  <h1>2026-01-04 프로젝트 수행일지</h1>
+  <a href="../index.html">← 메인으로</a>
+</header>
+
+<section>
+  <h2>1. 목표</h2>
+  <ul>
+    <li>DevSecOps 기반 CI/CD 보안 파이프라인 구조 구체화</li>
+    <li>Pentest 자동화 도구 엔드포인트 탐색 기능 고도화</li>
+    <li>Kubernetes(EKS) 환경 도입을 위한 사전 설계 정리</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. 수행 내용</h2>
+  <pre>
+    - DevSecOps 파이프라인 구조 정리:
+        앱(App), 웹 프론트엔드, 웹 백엔드로 분리된 구조를 기준으로
+        각 트랙별 SAST, 빌드, SBOM 생성, Security Gate 연계 흐름을 정리하였다.
+        CI 결과를 중앙 Security Gate에서 통합 판단하는 구조를 명확히 정의하였다.
+
+    - Pentest 자동화 도구 개선:
+        엔드포인트 탐색 로직을 보완하고,
+        중복 엔드포인트 제거 및 탐색 정확도 향상을 위한 개선 작업을 진행하였다.
+
+    - Kubernetes 적용 준비:
+        테스트 환경에서 네임스페이스 분리 전략을 재검토하고,
+        향후 Amazon EKS 기반 운영 클러스터 구축을 고려한 이관 방향을 정리하였다.
+  </pre>
+</section>
+
+<section>
+  <h2>3. 산출물</h2>
+  <ul>
+    <li>DevSecOps 파이프라인 구성도 및 트랙별 역할 정리 문서</li>
+    <li>Pentest 자동화 도구 엔드포인트 탐색 개선 내역</li>
+    <li>Kubernetes/EKS 적용을 위한 구조 설계 메모</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. 이슈 및 한계</h2>
+  <p>
+    엔드포인트 자동 탐색 과정에서 동적 생성 API 및 인증 연계 영역에 대한 추가 보완이 필요하며,
+    EKS 도입을 위해 IAM, 네트워크, 스토리지 구성에 대한 세부 설계가 요구됨.
+  </p>
+</section>
+
+<section>
+  <h2>5. 다음 작업 계획</h2>
+  <ul>
+    <li>Pentest 자동화 도구 엔드포인트 탐색 정확도 개선 작업 지속</li>
+    <li>Amazon EKS 기반 Kubernetes 운영 클러스터 구축</li>
+    <li>Security Gate 정책 기준(Allow/Warn/Block) 초안 수립</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Team 1</p>
+</footer>
+
+</body>
+</html>
