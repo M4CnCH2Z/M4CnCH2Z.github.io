@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2026-01-18 수행일지</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="2026-01-18 프로젝트 수행일지 - DevSecOps 운영 안정화 및 자동화 개선" />
+  <meta name="keywords" content="프로젝트 수행일지, DevSecOps, 보안 자동화, 운영 안정화, 멀티캠퍼스IT부트캠퍼스, 토스뱅크 사이버보안 엔지니어 부트캠프" />
+  <meta name="author" content="Team 1" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://M4CnCH2Z.github.io/logs/2026-01-18.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="프로젝트 수행일지 - DevSecOps 운영 안정화 및 자동화 개선" />
+  <meta property="og:description" content="2026-01-18 수행일지&#10;#부트캠프후기 #멀티캠퍼스IT부트캠퍼스 #[토스뱅크] 사이버보안 엔지니어 부트캠프(공격&방어 기술)" />
+  <meta property="og:url" content="https://M4CnCH2Z.github.io/logs/2026-01-18.html" />
+</head>
+<body>
+
+<header>
+  <h1>2026-01-18 프로젝트 수행일지</h1>
+  <a href="../index.html">← 메인으로</a>
+</header>
+
+<section>
+  <h2>1. 목표</h2>
+  <ul>
+    <li>API 엔드포인트를 수집하고 LLM을 활용하여 수동 Pentest 대비 효율적인 Pentest 자동화 시스템을 구축</li>
+    <li>DevSecOps 기반 운영 환경에서 보안 게이트(Security Gate) 흐름 구축 및 운영 안정화</li>
+    <li>CI/CD 파이프라인 상 보안 검증(분석/판정/증적 저장/알림)을 자동화하여 릴리즈 안정성 확보</li>
+    <li>보안 테스트 결과의 가시성 향상(리포트 자동화 및 Evidence 저장소 구축)</li>
+    <li>비용/운영 리스크(지원 종료 버전, 리소스 과다 사용 등) 재발 방지</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. 수행 내용</h2>
+  <pre>
+[1] Pentest/Automation (Blackbox URL Mode 중심으로 구현 진행)
+
+1) Blackbox URL Mode (URL 기반) - 구현/고도화 진행
+- User가 Target_URL 입력
+- Katana/Hakrawler/Arjun/HTTPx/Uro로 1차 엔드포인트 크롤링
+- 1차 크롤링 결과와 MCP Server Tool list를 LLM에 전달
+- LLM이 심층 크롤링 계획 수립
+- MCP Tool을 이용해 심층 크롤링 수행 후 최종 엔드포인트 리스트 생성
+- Arjun 스캐닝으로 파라미터 정보 수집 후, 파라미터를 사용해 메소드별 1회 요청 수행(GET/POST)
+- 각 요청/응답 저장 후 패턴 기반 스니펫을 수집하고, 엔드포인트별 룰 기반 대표 샘플 1~3개 선정
+- LLM에 대표 샘플 전달 → 엔드포인트 기능 및 exploitable parameter 분석 → 취약점 가설 수립
+- 수립된 가설을 위험도 순으로 리스트업
+- User가 MCP Tool을 직접 선택하고 프롬프트를 입력하여 작업 큐 생성
+- User의 Attack Scenario 기반 분석 수행(10~11 반복 가능)
+- 최종 리포트 생성(결과 취합 및 출력 구성 진행)
+
+2) 샘플링 및 스니펫 생성(main.py /sample + extract_snippets) - 구현/정리
+- 엔드포인트 목록을 받아 MAX_SAMPLE_ENDPOINTS까지만 처리(/sample)
+- 각 엔드포인트 처리 흐름:
+  * extract_params_from_path로 경로 기반 파라미터 추출
+  * run_arjun_params(target, ["GET","POST"])로 arjun 후보 파라미터 수집 후 params에 합침
+  * 마커 문자열 생성(__MARK_xxx__)로 요청/응답에 흔적 남김
+  * GET/POST 2회 샘플 요청 수행
+    - build_request_payload(params, False, marker)로 요청 페이로드 생성
+    - RateLimiter로 도메인 호출 속도 제한
+    - GET은 query, POST는 JSON body로 호출
+  * 응답 처리
+    - body_preview 생성(JSON이면 마스킹+축약, 아니면 텍스트 프리뷰)
+    - normalize_request/normalize_response로 요약 구조 생성
+    - extract_snippets(body_text, marker)로 규칙 기반 스니펫 추출
+    - raw 요청/응답 파일 저장
+    - SampleResult로 결과 저장(request_id 포함)
+
+- extract_snippets 패턴 기반 스니펫 규칙(순차 검사, window=300, 최대 3개 유지)
+  * 오류/스택트레이스: traceback, SQLSTATE, TypeError, fatal error, warning 등
+  * DB 관련: SQL syntax, ORA-, PostgreSQL, E11000 등
+  * 인증/권한: unauthorized, forbidden, access denied 등
+  * 권한/역할: is_admin, role, scope, rbac 등
+  * 템플릿 인젝션/표현식: {{, ${, th:text 등
+  * 파일/경로: upload, filename=, ../, /etc/passwd, .env 등
+  * 네트워크 에러: ECONNREFUSED, ENOTFOUND 등
+  * XSS 흔적: &lt;script, onerror=, document.cookie 등
+  * 보안 헤더: CSP, CORS, HSTS 등
+  * GraphQL: __schema, mutation, errors
+  * 리다이렉트: Location, window.location
+  * 마커 문자열이 응답에 존재하면 마커 주변도 스니펫에 추가
+  * 중복 제외, max_snippets=3까지만 유지
+
+- (참고/후속) OpenAPI Pipeline Mode는 설계 아이템으로만 정리되었으며, 현재 구현 범위는 Blackbox URL Mode까지 진행된 상태
+
+
+[2] Infra (EKS 운영 기반 안정화)
+- Kubernetes(EKS) 지원 종료(End-of-Support) 버전으로 인한 추가 지원 비용(과금) 이슈 확인
+- 운영 비용 증가 요인을 제거하기 위해 Kubernetes 버전 업그레이드 수행
+- 버전 정책/호환성 이슈로 노드그룹(Node Group) 재생성 및 재배포 작업 완료
+- 업그레이드 이후 운영 환경 정상 동작 여부 및 리소스 구성 점검 계획 수립
+
+[3] DevSecOps (Security Gate 구축 및 Workflow 고도화)
+- EKS 상 'security-gate' 네임스페이스 기반으로 보안 게이트 구성요소를 정의하고 구현 방향을 정리함
+- 보안 검증 결과를 릴리즈에 반영할 수 있도록 CI/CD 연동 흐름을 설계
+  - Evidence API: 보안 스캔 결과/리포트를 수집 및 증적화
+  - Decision Engine: 스캔 결과를 정책 기준으로 판정(PASS/BLOCK/WARN)하는 엔진
+  - GitHub Required Check 연동: PR/Merge/Release 단계에서 보안 검증을 Required Check로 강제
+  - Slack Webhook 연동: 실패/차단/주의 등 이벤트 발생 시 알림 전송으로 운영 가시성 확보
+  - (후순위) Admission Webhook: 배포 시점(클러스터 진입 단계)에서 정책 기반 차단까지 확장 검토
+
+- 증적 저장소 설계 및 저장 흐름 정리
+  - S3: 원본 리포트/로그 등 대용량 아티팩트 저장
+  - DynamoDB: 릴리즈 단위 상태/요약 저장
+    * release_id는 이미지 digest 기준으로 설정하여 불변성 및 추적성을 확보
+    * 상태값(예: PENDING/RUNNING/PASS/FAIL/BLOCK)과 요약 정보를 관리
+  </pre>
+</section>
+
+<section>
+  <h2>3. 산출물</h2>
+  <ul>
+    <li>Pentest Blackbox URL Mode 파이프라인 구현/고도화(크롤링→샘플링→가설→작업 큐→리포트)</li>
+    <li>샘플링(/sample) 및 스니펫 추출(extract_snippets) 규칙 구현/정리</li>
+    <li>요청/응답 저장 구조 및 대표 샘플(1~3개) 선정 로직</li>
+    <li>취약점 가설 수립 및 위험도 기반 리스트업 흐름(LLM 연계)</li>
+    <li>EKS Kubernetes 버전 업그레이드 및 노드그룹 재생성 작업 내역</li>
+    <li>보안 게이트(Security Gate) 아키텍처 구성 정의(Evidence API / Decision Engine / GitHub Check / Slack 연동)</li>
+    <li>증적 저장 구조 설계(S3 + DynamoDB, release_id=image digest 기반)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. 이슈 및 한계</h2>
+  <ul>
+    <li>Kubernetes 지원 종료 버전 사용으로 인해 추가 과금 가능성이 존재했으며, 재발 방지를 위한 운영 점검/모니터링 체계 강화가 필요</li>
+    <li>EKS 업그레이드 이후 운영 안정성(서비스 정상, 노드/파드 배치, 애드온 호환 등)에 대한 추가 검증이 필요</li>
+    <li>Blackbox URL Mode는 크롤링/샘플링 결과 품질이 대상 서비스 응답/차단 정책에 따라 달라질 수 있어, 재시도/예외 처리 및 품질 지표 보강이 필요</li>
+    <li>OpenAPI Pipeline Mode는 후속 구현 항목이며, 현재 단계에서는 Blackbox URL Mode 중심으로 기능 고도화가 진행 중</li>
+    <li>Decision Engine 정책(Severity 기준, 예외 허용, 룰셋 정교화)과 리포트 품질 고도화가 추가로 필요</li>
+  </ul>
+</section>
+
+<footer>
+  <p>© Team 1 Project Log</p>
+</footer>
+
+</body>
+</html>
