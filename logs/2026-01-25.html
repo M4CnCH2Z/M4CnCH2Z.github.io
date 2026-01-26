@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2026-01-25 수행일지</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="2026-01-25 프로젝트 수행일지 - Pentest 결과 리포트 생성 및 파이프라인 연계, DevSecOps 필터링 고도화, Infra 운영 안정화" />
+  <meta name="keywords" content="프로젝트 수행일지, Pentest, 리포트 생성, 파이프라인 연계, DevSecOps, 정적 분석 필터링, SonarQube, CodeQL, Semgrep, ArgoCD, EKS 업그레이드, 운영 안정화" />
+  <meta name="author" content="Team 1" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://M4CnCH2Z.github.io/logs/2026-01-25.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="프로젝트 수행일지 - Pentest/DevSecOps/Infra 운영 안정화 및 자동화 개선" />
+  <meta property="og:description" content="2026-01-25 수행일지&#10;Pentest 결과 리포트 생성 및 파이프라인 연계, DevSecOps 필터링 고도화, Infra 운영 안정화&#10;#부트캠프후기 #멀티캠퍼스IT부트캠퍼스 #[토스뱅크] 사이버보안 엔지니어 부트캠프(공격&방어 기술)" />
+  <meta property="og:url" content="https://M4CnCH2Z.github.io/logs/2026-01-25.html" />
+</head>
+<body>
+
+<header>
+  <h1>2026-01-25 프로젝트 수행일지</h1>
+  <a href="../index.html">← 메인으로</a>
+</header>
+
+<section>
+  <h2>1. 목표</h2>
+  <ul>
+    <li>Pentest 결과 리포트 생성 및 파이프라인 연계 진행</li>
+    <li>Pentest - 취약점 존재 가설 수립/상세 분석 로직 고도화 및 자동화 수준 향상</li>
+    <li>DevSecOps - Workflow 고도화 및 정적 분석 노이즈 저감(오탐/과대탐지 개선)</li>
+    <li>DevSecOps - ArgoCD 연계 Staging 환경 배포 체계 정리</li>
+    <li>Infra - 운영 환경 점검/비용 모니터링 및 배포 이슈 정상화</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. 수행 내용</h2>
+  <pre>
+[Pentest]
+- 취약점 존재 가설 수립 고도화, 상세 분석 로직 고도화
+- 분석 로직 고도화, 리포트 생성 로직 구현, API 워크플로우 제작
+- 결과 리포트 생성 및 파이프라인 연계 작업 진행/지속
+- 침투 테스트 수행 프로세스 자동화 수준 고도화
+- Pentest 툴 MCP Server 로직 고도화
+- Pentest 자동화 도구 및 파이프라인 연계 시나리오(Workflow) 구상
+
+[DevSecOps]
+- ArgoCD 연계 Staging 환경 배포
+- Workflow 고도화(지속)
+- 정적 분석 결과에서 중요도가 낮은 이슈가 Critical로 과대 분류되는 사례 확인 및 원인 분석
+- 오탐/과대탐지 개선을 위한 룰/시그니처 기준 재정의 및 디테일 필터링 로직 적용 작업 진행
+- SonarQube 정적 분석 결과 노이즈 감소를 위한 필터링 정책 개선
+
+[Infra]
+- 표준 지원 종료에 따른 추가 과금 이슈 대응: EKS 쿠버네티스 버전 업그레이드 및 노드그룹 재생성 완료
+- 업그레이드/노드그룹 재생성 이후 발생한 배포/서비스 이상 징후 원인 분석 및 정상화 조치 진행 중
+- 운영 환경 구성/상태 재점검 및 비용 관점 모니터링
+- 클라우드 환경에서 Pentest 수행 제약 판단에 따라 staging 환경 재구성(온프레미스 이전) 추진 및 기존 staging 배포 서비스 production 이관 작업 진행
+- Pentest 결과 파이프라인 연계를 위한 로컬 실행 환경 구축
+
+[문서/기획]
+- 앱 보안 진단 결과 취합 및 리포트 구조 정리/표준화 작업 진행
+- 프로젝트 개요 구상 및 초안 작성(프로젝트 주제 및 Pentest 툴/파이프라인 연결 방식)
+  </pre>
+</section>
+
+<section>
+  <h2>3. 산출물</h2>
+  <ul>
+    <li>Pentest 결과 리포트 생성 로직 구현 내역</li>
+    <li>Pentest 결과 리포트 ↔ 파이프라인 연계 진행 내역</li>
+    <li>Pentest 분석 로직(가설 수립/상세 분석) 고도화 정리</li>
+    <li>Pentest API 워크플로우 제작 내역</li>
+    <li>정적 분석 필터링 개선안(SonarQube 및 오탐/과대탐지 기준)</li>
+    <li>ArgoCD 연계 Staging 배포 구성 정리</li>
+    <li>EKS 업그레이드/노드그룹 재생성 결과 및 안정화 조치 내역</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. 이슈 및 한계</h2>
+  <ul>
+    <li>Pentest 리포트 산출물 표준(스키마/메타데이터) 및 파이프라인 게이팅 기준 추가 정교화 필요</li>
+    <li>자동화 고도화 과정에서 예외 케이스(부분 성공/실패/타임아웃) 처리 기준 보강 필요</li>
+    <li>클라우드 환경 Pentest 수행 제약으로 staging 온프레미스 이전/구성 변경 검토 필요</li>
+    <li>EKS 업그레이드 이후 배포/서비스 이상 징후가 발생하여 정상화 조치 진행 중</li>
+    <li>정적 분석 결과 과대 분류/오탐 이슈가 존재하여 필터링/분류 정책 지속 개선 필요</li>
+  </ul>
+</section>
+
+<footer>
+  <p>© Team 1 Project Log</p>
+</footer>
+
+</body>
+</html>
